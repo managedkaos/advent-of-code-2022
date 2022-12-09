@@ -28,17 +28,16 @@
 
 $total = 0;
 
-%outcome = (
+%score = (
     AX => 4, AY => 8, AZ => 3,
-    BX => 1, BY => 6, BZ => 9,
+    BX => 1, BY => 5, BZ => 9,
     CX => 7, CY => 2, CZ => 6
 );
 
 while (<>) {
     chomp;
     ($opponent, $player) = split /\s+/;
-    $total += $outcome{$opponent . $player};
-    print "$opponent, $player = $outcome{$opponent . $player}\n";
+    $total += $score{$opponent . $player};
 }
 
 print "\n$total\n";
