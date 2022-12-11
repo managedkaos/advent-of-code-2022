@@ -13,9 +13,9 @@
 # Y means you need to end the round in a draw
 # Z means you need to win. Good luck!"
 %strategy = (
-    AX => 'Z', AY => 'X', AZ => 'Y',
-    BX => 'X', BY => 'Y', BZ => 'Z',
-    CX => 'Y', CY => 'Z', CZ => 'X'
+    AX => Z, AY => X, AZ => Y,
+    BX => X, BY => Y, BZ => Z,
+    CX => Y, CY => Z, CZ => X
 );
 
 # The score for a single round is the score for the shape you selected
@@ -41,7 +41,6 @@ $total = 0;
 while (<>) {
     chomp;
     ($opponent, $player) = split /\s+/;
-    print $strategy{$opponent . $player};
     $total += $score{$opponent . $strategy{$opponent . $player}};
 }
 
