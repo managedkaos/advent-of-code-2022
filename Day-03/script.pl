@@ -13,12 +13,12 @@ while (<>) {
     $compartment1 = substr($_, 0, $half_size);
     $compartment2 = substr($_, $half_size);
 
-    print "$_ => $compartment1, $compartment2 => ";
+    # print "$_ => $compartment1, $compartment2 => ";
 
     foreach $letter (split(//, $compartment1)) {
         if ($compartment2 =~ /$letter/) {
-            print "$letter => ";
-            print "$priority{$letter}\n";
+            #print "$letter => ";
+            #print "$priority{$letter}\n";
             $total += $priority{$letter};
             last;
         }
