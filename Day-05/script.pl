@@ -1,26 +1,69 @@
 #!/usr/bin/env perl
-$elf = 0;
+use Data::Dumper qw(Dumper);
+
+$height = 0;
 
 while (<>) {
-    $calories{$elf} += $_;
-    if (/^$/) {
-        $elf++;
+    # If the line starts with 'move', read the instructions
+    if (/^move\s+(\d+)\s+from\s+(\d+)\s+to\s+(\d+)/) {
+        $move   = $1;
+        $source = $2 - 1;
+        $target = $3 - 1;
+
+        # process the instructions for this move
+        for $i (1 .. $move) {
+            $x = shift(@{ $processed_crates[$source] });
+            print "moving '$x' to @{ $processed_crates[$target] }\n";
+            unshift(@{ $processed_crates[$target] }, $x);
+        }
+
+    # if this is the row with stack numbers, transpose the matrix
+    } elsif (/^\s+\d+/) {
+
+        # transpose
+        for my $row (0..@crates - 1) {
+            for my $col (0..@{$crates[$row]} - 1) {
+                $processed_crates[$col][$row] = $crates[$row][$col];
+            }
+        }
+
+        # remove any spaces and undefs at the front of each stack of crates
+        for my $row (0..@processed_crates - 1) {
+            while ($processed_crates[$row][0] !~ /[a-zA-Z0-9]/) {
+                shift @{$processed_crates[$row]};
+            }
+        }
+
+        print "# BEFORE:\n";
+        print Dumper \@processed_crates;
+
+    } else {
+
+        # remove the brackts from the crate IDs
+        s/\[//g;
+        s/\]//g;
+
+        # split on white space
+        @input = split(/\s+/);
+
+        # add the crate to a stack
+        for $stack (0 .. $#input) {
+            $crates[$height][$stack] = $input[$stack];
+        }
+
+        # increment the height counter
+        $height += 1;
     }
 }
 
-@calories_sorted_by_elf = sort { $calories{$b} <=> $calories{$a} } keys %calories ;
+print "# AFTER:\n";
+print Dumper \@processed_crates;
 
-$elf_with_the_most_calories = $calories_sorted_by_elf[0];
+# print the "top" of each stack of crates
+print "Top crate on each stack is: ";
 
-$sum = $calories{$calories_sorted_by_elf[0]} + $calories{$calories_sorted_by_elf[1]} + $calories{$calories_sorted_by_elf[2]};
+for my $row (0..@processed_crates - 1) {
+    print "$processed_crates[$row][0]";
+}
 
-print "# Elf with the most calories...\n";
-print "\t     Elf = $elf_with_the_most_calories\n";
-print "\tCalories = $calories{ $elf_with_the_most_calories }\n\n";
-
-print "# Sum of the calories held by the top three elves\n";
-print "\t  Elf[1] = $calories{$calories_sorted_by_elf[0]}\n";
-print "\t  Elf[2] = $calories{$calories_sorted_by_elf[1]}\n";
-print "\t  Elf[3] = $calories{$calories_sorted_by_elf[2]}\n";
-
-print "\t   Total = $sum\n";
+print "\n";
