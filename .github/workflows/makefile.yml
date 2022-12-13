@@ -11,19 +11,19 @@ jobs:
   test:
     strategy:
       matrix:
-        day: [01, 02, 03, 04]
+        day: ['01', '02', '03', '04']
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - name: Run tests
-      run: make -C./Day-${{ matrix.day}} test
+      run: make -C ./Day-${{ matrix.day}} test
   build:
     strategy:
       matrix:
-        version: [01, 02, 03, 04]
+        day: ['01', '02', '03', '04']
     needs: test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - name: Run scripts
-      run: make -C./Day-${{ matrix.day}}
+      run: make -C ./Day-${{ matrix.day}}
