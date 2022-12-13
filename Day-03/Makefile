@@ -1,4 +1,6 @@
-all:
+all: test build
+
+build:
 	perl script.pl input.txt
 	perl script-part-2.pl input.txt
 

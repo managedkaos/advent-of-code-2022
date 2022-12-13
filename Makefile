@@ -1,6 +1,6 @@
 SUBDIRS := $(wildcard ./Day*)
 
-all test: $(SUBDIRS)
+all test build: $(SUBDIRS)
 
 $(SUBDIRS):
 	$(MAKE) -C $@
